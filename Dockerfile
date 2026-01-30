@@ -95,13 +95,13 @@ RUN pip install --no-cache-dir --upgrade --ignore-installed pip "setuptools<81" 
 # Show what was installed
 RUN python --version && pip --version && pip freeze
 # Define entrypoint through which all CLIs can be run
-WORKDIR $ig_path/SC_seg/cli
-LABEL entry_path=$ig_path/SC_seg/cli
+WORKDIR $ig_path/Refine_Tubular_SCseg/cli
+LABEL entry_path=$ig_path/Refine_Tubular_SCseg/cli
 
 # Test our entrypoint.  If we have incompatible versions of numpy and
 # Openslide, one of these will fail
 RUN python -m slicer_cli_web.cli_list_entrypoint --list_cli
-RUN python -m slicer_cli_web.cli_list_entrypoint TubuleSubCompartmentSegmentation --help
+RUN python -m slicer_cli_web.cli_list_entrypoint Refining_Subcompartment_segmentation --help
 RUN python -m slicer_cli_web.cli_list_entrypoint LabelTubules --help
 
 ENTRYPOINT ["/bin/bash", "docker-entrypoint.sh"] 

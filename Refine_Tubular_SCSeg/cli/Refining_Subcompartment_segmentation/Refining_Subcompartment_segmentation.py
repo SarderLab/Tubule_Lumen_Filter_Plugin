@@ -131,7 +131,7 @@ def main(args):
     fill_alpha = float(getattr(args, "fillAlpha", 0.35))
     line_width = int(getattr(args, "lineWidth", 2))
     pad_px = int(getattr(args, "padPx", 64))
-    min_lumen_area_px = int(getattr(args, "minLumenAreaPx", 50))
+    min_lumen_area_px = int(getattr(args, "minLumenAreaPx", 100))
     min_area_px = int(getattr(args, "minAreaPx", 10))
     nuclei_point_radius_px = int(getattr(args, "nucleiPointRadiusPx", 3))
 

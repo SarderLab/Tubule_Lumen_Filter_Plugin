@@ -340,7 +340,7 @@ def refine_subcompartments(
     fill_alpha: float = 0.35,
     line_width: int = 2,
     pad_px: int = 64,
-    min_lumen_area_px: int = 50,
+    min_lumen_area_px: int = 100,
     min_area_px: int = 10,
     nuclei_point_radius_px: int = 3,
     debug_dir: str = None,
@@ -486,7 +486,7 @@ def integrated_refine_subcompartments_single(
     fill_alpha: float = 0.35,
     line_width: int = 2,
     pad_px: int = 64,
-    min_lumen_area_px: int = 50,
+    min_lumen_area_px: int = 100,
     min_area_px: int = 10,
     nuclei_point_radius_px: int = 3,
     debug_dir: str = None,
@@ -523,7 +523,7 @@ def main():
     ap.add_argument("--fill_alpha", type=float, default=0.35)
     ap.add_argument("--line_width", type=int, default=2)
     ap.add_argument("--pad_px", type=int, default=64)
-    ap.add_argument("--min_lumen_area_px", type=int, default=50)
+    ap.add_argument("--min_lumen_area_px", type=int, default=100)
     ap.add_argument("--min_area_px", type=int, default=10)
     ap.add_argument("--nuclei_point_radius_px", type=int, default=3)
     ap.add_argument("--debug_dir", default=None)

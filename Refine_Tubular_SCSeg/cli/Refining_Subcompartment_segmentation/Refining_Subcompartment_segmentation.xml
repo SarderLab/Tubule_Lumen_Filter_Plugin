@@ -29,15 +29,6 @@
     </image>
 
     
-    <string>
-      <name>tubules_ids</name>
-      <label>Tubules IDs (comma-separated)</label>
-      <description>Comma-separated list of tubules element ids to process (e.g. id1,id2). If empty, all tubules are processed.</description>
-      <default></default>
-      <longflag>tubules-ids</longflag>
-      <channel>input</channel>
-    </string>
-
   </parameters>
 
   <!-- ======================== Refinement Controls ======================== -->
@@ -51,7 +42,7 @@
       <description>
         Removes tiny lumen connected components smaller than this area (in ROI pixels).
       </description>
-      <default>50</default>
+      <default>100</default>
       <longflag>minLumenAreaPx</longflag>
       <channel>input</channel>
       <index>5</index>

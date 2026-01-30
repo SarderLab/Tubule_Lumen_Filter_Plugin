@@ -75,7 +75,7 @@ RUN which  python && \
 ENV build_path=/opt/build
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
-ENV ig_path=/opt/SC_seg_interactive
+ENV ig_path=/opt/Tubule_Lumen_Filter_Plugin
 RUN mkdir -p $ig_path
 
 RUN apt-get update && \
@@ -95,8 +95,9 @@ RUN pip install --no-cache-dir --upgrade --ignore-installed pip "setuptools<81" 
 # Show what was installed
 RUN python --version && pip --version && pip freeze
 # Define entrypoint through which all CLIs can be run
-WORKDIR $ig_path/Refine_Tubular_SCseg/cli
-LABEL entry_path=$ig_path/Refine_Tubular_SCseg/cli
+WORKDIR $ig_path/Refine_Tubular_SCSeg/cli
+RUN chmod +x $ig_path/Refine_Tubular_SCSeg/cli/docker-entrypoint.sh
+LABEL entry_path=$ig_path/Refine_Tubular_SCSeg/cli
 
 # Test our entrypoint.  If we have incompatible versions of numpy and
 # Openslide, one of these will fail

@@ -1,5 +1,3 @@
----
-
 # Tubule Subcompartment Segmentation from WSI Annotations
 
 This script refines **kidney tubule subcompartment annotations** on whole slide images (WSIs) by combining:
@@ -8,7 +6,7 @@ This script refines **kidney tubule subcompartment annotations** on whole slide 
 * Nuclei annotations from **GeoJSON**
 * Slide geometry from the **WSI (TIFF/WSI)**
 
-It performs **ROI-based rasterization + boolean masking** to:
+It performs following:
 
 * assign nuclei inside eosinophilic regions → **Nuclei**
 * subtract nuclei from eosinophilic → **Eosinophilic (cleaned)**
@@ -16,13 +14,12 @@ It performs **ROI-based rasterization + boolean masking** to:
 * remove small noisy components
 * output clean **polygon annotations** back to DSA-style JSON
 
-The result is a **geometrically consistent, overlap-free set of polygons** suitable for Digital Slide Archive (DSA), HistomicsUI, or downstream morphometry/ML pipelines.
+The result is a json file suitable for Digital Slide Archive (DSA), HistomicsUI, or downstream morphometry/ML pipelines.
 
 ---
 
 ## Features
 
-* Works directly on **WSI level-0 coordinates**
 * **Per-tubule ROI processing** (memory efficient; avoids full-slide masks)
 * Supports:
 
@@ -33,7 +30,6 @@ The result is a **geometrically consistent, overlap-free set of polygons** suita
   * nuclei from lumen/eosinophilic masks
   * small connected components (noise)
 * Outputs **DSA-compatible polyline elements**
-* Fast via OpenCV rasterization
 
 ---
 
@@ -215,44 +211,8 @@ python refine_subcompartments.py \
   --min_lumen_area_px 100
 ```
 
-Then load `kidney_refined.json` in:
+Then load `refined.json` in:
 
 * Digital Slide Archive (DSA)
 * HistomicsUI
 * or downstream ML pipeline
-
----
-
-## Notes
-
-* Coordinates must be **level-0 (base resolution)**
-* Currently `--level != 0` is not supported
-* Very small nuclei/lumen fragments may be removed depending on thresholds
-* Assumes non-overlapping tubules
-
----
-
-## Extending
-
-Easy additions:
-
-* multi-level support
-* nuclei point → disk radius parameter
-* multiprocessing
-* morphological smoothing
-* stain-specific rules
-
----
-
-## License
-
-Add your license here (MIT/BSD/etc).
-
----
-
-If you'd like, I can next:
-✅ add usage GIF
-✅ add diagram of pipeline
-✅ auto-generate CLI help section
-✅ convert to a pip-installable package structure
-✅ or tailor README for a paper release / Zenodo archive

@@ -103,6 +103,5 @@ LABEL entry_path=$ig_path/Refine_Tubular_SCSeg/cli
 # Openslide, one of these will fail
 RUN python -m slicer_cli_web.cli_list_entrypoint --list_cli
 RUN python -m slicer_cli_web.cli_list_entrypoint Refining_Subcompartment_segmentation --help
-RUN python -m slicer_cli_web.cli_list_entrypoint LabelTubules --help
 
 ENTRYPOINT ["/bin/bash", "docker-entrypoint.sh"] 

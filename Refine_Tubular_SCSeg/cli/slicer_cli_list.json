@@ -1,7 +1,4 @@
 {
-  "LabelTubules": {
-    "type": "python"
-  },
   "Refining_Subcompartment_segmentation": {
     "type": "python"
   }

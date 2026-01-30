@@ -335,6 +335,7 @@ def refine_subcompartments(
     tubules_subcompartments_json: str,
     nuclei_json: str,
     out_json: str,
+    selected_tubule_ids=None,
     level: int = 0,
     fill_alpha: float = 0.35,
     line_width: int = 2,
@@ -355,20 +356,36 @@ def refine_subcompartments(
         # ---- tubules ----
         elems = load_dsa_elements(tubules_subcompartments_json)
         space_polys, nonspace_polys = [], []
-        label_counts = Counter()
+        # label_counts = Counter()
         for e in elems:
+            elem_id = str(e.get("id", "")).strip()   # DSA elements often have "id"
+            if selected_tubule_ids is not None:
+                if not elem_id or elem_id not in selected_tubule_ids:
+                    continue
+
             lab = get_elem_label(e)
-            label_counts[lab] += 1
             pts = elem_points_to_xy(e)
             if pts.shape[0] < 3:
                 continue
+
             ll = lab.lower()
             if "luminal" in ll:
                 space_polys.append(pts)
             elif "eosinophilic" in ll:
                 nonspace_polys.append(pts)
 
-        print("[INFO] Top tubule labels:", label_counts.most_common(10))
+            # lab = get_elem_label(e)
+            # label_counts[lab] += 1
+            # pts = elem_points_to_xy(e)
+            # if pts.shape[0] < 3:
+            #     continue
+            # ll = lab.lower()
+            # if "luminal" in ll:
+            #     space_polys.append(pts)
+            # elif "eosinophilic" in ll:
+            #     nonspace_polys.append(pts)
+
+        # print("[INFO] Top tubule labels:", label_counts.most_common(10))
         print(f"[INFO] space polys (Luminal): {len(space_polys)}")
         print(f"[INFO] nonspace polys (Eosinophilic): {len(nonspace_polys)}")
 
@@ -474,6 +491,7 @@ def integrated_refine_subcompartments_single(
     tubules_subcompartments_json: str,
     nuclei_json: str,
     out_json: str,
+    selected_tubule_ids=None, 
     *,
     level: int = 0,
     fill_alpha: float = 0.35,
@@ -494,6 +512,7 @@ def integrated_refine_subcompartments_single(
         tubules_subcompartments_json=tubules_subcompartments_json,
         nuclei_json=nuclei_json,
         out_json=out_json,
+        selected_tubule_ids=selected_tubule_ids,
         level=level,
         fill_alpha=fill_alpha,
         line_width=line_width,

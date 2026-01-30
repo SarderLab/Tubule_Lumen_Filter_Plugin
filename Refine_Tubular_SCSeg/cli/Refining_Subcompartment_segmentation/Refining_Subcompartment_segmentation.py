@@ -121,6 +121,10 @@ def main(args):
     # Annotation names on the item
     tubules_sub_name = str(getattr(args, "tubulesSubcompartmentsName", "tubules_subcompartments"))
     nuclei_name = str(getattr(args, "nucleiAnnotationName", "nuclei"))
+    tubule_ids_raw = str(getattr(args, "tubuleElementIds", "all")).strip()
+    selected_tubule_ids = None
+    if tubule_ids_raw and tubule_ids_raw != "all":
+        selected_tubule_ids = {s.strip() for s in tubule_ids_raw.split(",") if s.strip()}
 
     # Params for your refine code
     level = int(getattr(args, "level", 0))
@@ -204,13 +208,14 @@ def main(args):
     # IMPORTANT: import your function from wherever you placed it
     # Example:
     # from SC_seg.Code.refine_subcompartments import integrated_refine_subcompartments_single
-    from Refine_tubular_SCSeg.Code.refine_subcompartments import integrated_refine_subcompartments_single
+    from Refine_Tubular_SCSeg.Code.refine_subcompartments import integrated_refine_subcompartments_single
 
     integrated_refine_subcompartments_single(
         wsi=svs_path,
         tubules_subcompartments_json=tubules_sub_json,
         nuclei_json=nuclei_json,
         out_json=output_json_path,
+        selected_tubule_ids=selected_tubule_ids,  
         level=level,
         fill_alpha=fill_alpha,
         line_width=line_width,

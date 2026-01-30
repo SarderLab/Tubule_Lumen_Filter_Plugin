@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<executable>
+  <category>HistomicsTK</category>
+  <title>Tubules Sub-Compartments Refinement (ROI nuclei subtraction)</title>
+  <description>
+    Refines an existing tubules_subcompartments annotation by subtracting nuclei (from a nuclei annotation or GeoJSON-style nuclei)
+    within each tubule ROI, producing a new refined tubules_subcompartments annotation back onto the slide (polyline elements in slide coordinates).
+    Downloads the WSI + required annotations via Girder, runs refinement, then POSTs the result as a new annotation and uploads the JSON to the item.
+  </description>
+  <version>0.1.0</version>
+  <documentation-url>https://github.com/SarderLab/SC_seg_plugin</documentation-url>
+  <license>Apache 2.0</license>
+  <contributor>Harishwar Reddy Kasireddy (University of Florida)</contributor>
+  <acknowledgements>This work is part of efforts in digital pathology by the Sarder Lab: UFL.</acknowledgements>
+
+  <!-- ======================== IO / Required ======================== -->
+  <parameters>
+    <label>IO</label>
+    <description>Input / Output parameters</description>
+
+    <image reference="_girder_id_">
+      <name>svsFile</name>
+      <label>Input SVS / Item</label>
+      <description>
+        Girder file _id or item _id for the whole-slide image. If an item id is provided, the largest WSI-like file is chosen.
+      </description>
+      <channel>input</channel>
+      <index>0</index>
+    </image>
+
+  </parameters>
+
+  <!-- ======================== Refinement Controls ======================== -->
+  <parameters>
+    <label>Refinement Controls</label>
+    <description>ROI processing and polygon cleanup parameters</description>
+
+    <integer>
+      <name>minLumenAreaPx</name>
+      <label>Minimum Lumen Component Area (px)</label>
+      <description>
+        Removes tiny lumen connected components smaller than this area (in ROI pixels).
+      </description>
+      <default>50</default>
+      <longflag>minLumenAreaPx</longflag>
+      <channel>input</channel>
+      <index>5</index>
+    </integer>
+  </parameters>
+
+  <!-- ======================== Girder Auth ======================== -->
+  <parameters advanced="true">
+    <label>Girder (Required for Orchestrator)</label>
+    <description>Used to download WSI + annotations, and POST the refined result.</description>
+
+    <string>
+      <name>girderApiUrl</name>
+      <longflag>api-url</longflag>
+      <label>Girder API URL</label>
+      <description>e.g., https://athena.example.org/api/v1</description>
+      <default></default>
+    </string>
+
+    <string>
+      <name>girderToken</name>
+      <longflag>token</longflag>
+      <label>Girder API Token</label>
+      <description>Token for an authenticated user session</description>
+      <default></default>
+    </string>
+  </parameters>
+</executable>

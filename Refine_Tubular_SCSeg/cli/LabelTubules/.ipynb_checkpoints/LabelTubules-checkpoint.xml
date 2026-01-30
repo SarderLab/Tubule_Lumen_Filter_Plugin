@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<executable>
+  <category>HistomicsTK</category>
+  <title>List Tubules (IDs)</title>
+  <description>Fetch the latest 'tubules' annotation and optionally publish a copy with per-element labels set to their element id (so IDs show in the DSA viewer).</description>
+  <version>0.1.0</version>
+  <documentation-url>https://github.com/SarderLab/SC_seg_plugin</documentation-url>
+  <license>Apache 2.0</license>
+  <contributor>Harishwar Reddy Kasireddy (University of Florida)</contributor>
+
+  <!-- IO / Girder -->
+  <parameters>
+    <label>IO / Girder</label>
+    <description>Girder API connection parameters</description>
+
+    <image reference="_girder_id_">
+      <name>input_file</name>
+      <label>Item or File ID</label>
+      <description>Item _id or File _id that contains the tubules annotation (file or item)</description>
+      <channel>input</channel>
+      <index>0</index>
+    </image>
+
+    <file>
+      <name>out</name>
+      <label>Output JSON</label>
+      <description>Optional path to save the listing (downloadable as job output)</description>
+      <longflag>out</longflag>
+      <channel>output</channel>
+    </file>
+
+    <boolean>
+      <name>publish_annotation</name>
+      <longflag>publish-annotation</longflag>
+      <label>Publish Id-Labeled Annotation</label>
+      <description>If true, post a copy of the annotation with each element's label set to its element id so IDs show in the viewer.</description>
+      <default>false</default>
+      <channel>input</channel>
+    </boolean>
+
+  </parameters>
+
+  <!-- (Optional) Girder connection: kept separate so girder can be omitted when not used -->
+  <parameters advanced="true">
+    <label>Girder (Optional)</label>
+    <description>Provide to enable fetching/publishing annotations via a Girder/DSA instance</description>
+    <string>
+      <name>girderApiUrl</name>
+      <longflag>api-url</longflag>
+      <label>Girder API URL</label>
+      <description>e.g., https://your-dsa.example/api/v1</description>
+      <default></default>
+      <channel>input</channel>
+    </string>
+    <string>
+      <name>girderToken</name>
+      <longflag>token</longflag>
+      <label>Girder API Token</label>
+      <description>Your Girder API token (use girder REST API doc to generate one)</description>
+      <default></default>
+      <channel>input</channel>
+    </string>
+  </parameters>
+</executable>

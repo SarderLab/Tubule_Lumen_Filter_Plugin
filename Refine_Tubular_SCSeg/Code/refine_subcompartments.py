@@ -360,7 +360,7 @@ def refine_subcompartments(
         for e in elems:
             elem_id = str(e.get("id", "")).strip()   # DSA elements often have "id"
             if selected_tubule_ids is not None:
-                if not elem_id or elem_id not in selected_tubule_ids:
+                if (not elem_id) or (elem_id not in selected_tubule_ids):
                     continue
 
             lab = get_elem_label(e)
@@ -373,17 +373,6 @@ def refine_subcompartments(
                 space_polys.append(pts)
             elif "eosinophilic" in ll:
                 nonspace_polys.append(pts)
-
-            # lab = get_elem_label(e)
-            # label_counts[lab] += 1
-            # pts = elem_points_to_xy(e)
-            # if pts.shape[0] < 3:
-            #     continue
-            # ll = lab.lower()
-            # if "luminal" in ll:
-            #     space_polys.append(pts)
-            # elif "eosinophilic" in ll:
-            #     nonspace_polys.append(pts)
 
         # print("[INFO] Top tubule labels:", label_counts.most_common(10))
         print(f"[INFO] space polys (Luminal): {len(space_polys)}")
@@ -437,7 +426,7 @@ def refine_subcompartments(
 
         elems_out = []
 
-        # ✅ ONE unified processor for any tubule polygon
+        # ONE unified processor for any tubule polygon
         def process_one_tubule(poly, kind: str):
             bx0, by0, bx1, by1 = bbox_from_poly_xy(poly)
             x0, y0, x1, y1 = expand_and_clip_bbox(bx0, by0, bx1, by1, pad_px, W, H)
@@ -538,9 +527,42 @@ def main():
     ap.add_argument("--min_area_px", type=int, default=10)
     ap.add_argument("--nuclei_point_radius_px", type=int, default=3)
     ap.add_argument("--debug_dir", default=None)
+    ap.add_argument("--tubuleElementIds", default="all", help="Comma separated list of tubule IDs, or 'all' for all tubules")
 
     args = ap.parse_args()
-    integrated_refine_subcompartments_single(**vars(args))
+    # integrated_refine_subcompartments_single(**vars(args))
+    # tubule_ids_raw = str(getattr(args, "tubuleElementIds", "all")).strip()
+    # tubule_ids_norm = tubule_ids_raw.lower()
+    # selected_tubule_ids = None
+    # if tubule_ids_raw != "all" and tubule_ids_raw:
+    #     selected_tubule_ids = {s.strip() for s in tubule_ids_raw.split(",") if s.strip()}
+    tubule_ids_raw = str(getattr(args, "tubuleElementIds", "all")).strip()
+    tubule_ids_norm = tubule_ids_raw.lower()
+
+    selected_tubule_ids = None
+    # treat "", "all" as ALL tubules
+    if tubule_ids_raw and tubule_ids_norm != "all":
+        selected_tubule_ids = {s.strip() for s in tubule_ids_raw.split(",") if s.strip()}
+        if not selected_tubule_ids:
+            selected_tubule_ids = None
+
+    # Call the refinement function
+    integrated_refine_subcompartments_single(
+        wsi=args.wsi,
+        tubules_subcompartments_json=args.tubules_subcompartments_json,
+        nuclei_json=args.nuclei_json,
+        out_json=args.out_json,
+        selected_tubule_ids=selected_tubule_ids,  # Pass the selected tubule IDs
+        level=args.level,
+        fill_alpha=args.fill_alpha,
+        line_width=args.line_width,
+        pad_px=args.pad_px,
+        min_lumen_area_px=args.min_lumen_area_px,
+        min_area_px=args.min_area_px,
+        nuclei_point_radius_px=args.nuclei_point_radius_px,
+        debug_dir=args.debug_dir,
+    )
+
 
 
 if __name__ == "__main__":
